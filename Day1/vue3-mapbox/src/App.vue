@@ -1,28 +1,15 @@
 <template>
-  <div id="map">
-
+  <div>
+    <LoadMapBox />
+    <MapBoxControl />
+    <MapBoxGeoJSON />
   </div>
 </template>
 
 <script setup>
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { onMounted } from 'vue';
-const token = import.meta.env.VITE_MAPBOX_TOKEN;
-mapboxgl.accessToken = token;
-onMounted(() => {
-  const map = new mapboxgl.Map({
-    container: 'map', // container ID
-    style: 'mapbox://styles/mapbox/streets-v12', // style URL
-    center: [-74.5, 40], // starting position [lng, lat]
-    zoom: 9, // starting zoom
-  });
-})
+import LoadMapBox from './components/LoadMapBox.vue';
+import MapBoxControl from './components/MapBoxControl/MapBoxControl.vue'
+import MapBoxGeoJSON from './components/MapBoxGeoJSON/MapBoxGeoJSON.vue'
 </script>
 
-<style lang="scss" scoped>
-#map {
-  width: 100%;
-  height: 100vh;
-}
-</style>
+<style lang="scss" scoped></style>

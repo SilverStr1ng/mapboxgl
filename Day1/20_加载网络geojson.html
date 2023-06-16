@@ -33,13 +33,14 @@
             projection: 'globe',
         });
 
+        const url = 'https://geo.datav.aliyun.com/areas_v3/bound/420100_full.json'
         map.on('style.load', () => {
             map.setFog({});
 
             // addSource  addLayer
             map.addSource('wuhan-source', {
                 type: 'geojson',
-                data: 'https://geo.datav.aliyun.com/areas_v3/bound/420100_full.json'
+                data: url
             });
 
             map.addLayer({

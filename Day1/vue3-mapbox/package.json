@@ -11,6 +11,7 @@
     "mapbox-gl": "^2.15.0",
     "sass": "^1.63.4",
     "scss": "^0.2.4",
+    "unplugin-auto-import": "^0.16.4",
     "vue": "^3.3.4"
   },
   "devDependencies": {
