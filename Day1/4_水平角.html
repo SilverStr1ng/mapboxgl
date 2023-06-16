@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 1、导入mapbox的依赖 js+css -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 2、设置地图容器的挂载点 -->
+    <div id="map">
+
+    </div>
+    <script>
+        /* 3、实例化地图 */
+        mapboxgl.accessToken = 'pk.eyJ1IjoiemhvbmdkaXNodW1hIiwiYSI6ImNsNXJoYXR5eTI2bGgzZW53d2didWF1c3AifQ.6vOplM2NQc_xnJW3aA5ZBA';
+        const map = new mapboxgl.Map({
+            /* 将地图挂载到对应的DOM上 相当于ol的target */
+            container: "map",
+            /* 相当于ol的layers */
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "type": "raster",
+                        "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            center: [114.30, 30.50],
+            zoom: 6,
+            projection: 'globe',
+            // 水平角度
+            bearing: 0,
+        })
+        map.on("style.load", () => {
+            // map.setFog 的作用是设置雾气效果, 如果不设置, 则地图会显示为白色;
+            // 如果不传参数, 则会显示为默认的雾气效果;
+            map.setFog({})
+        })
+
+        map.on("click", () => {
+            let bearing = map.getBearing()
+            map.setBearing(bearing + 10)
+        })
+    </script>
+</body>
+
+</html>
