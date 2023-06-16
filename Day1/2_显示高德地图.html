@@ -59,7 +59,15 @@
         map.on("style.load", () => {
             // map.setFog 的作用是设置雾气效果, 如果不设置, 则地图会显示为白色;
             // 如果不传参数, 则会显示为默认的雾气效果;
-            map.setFog({})
+            map.setFog({
+                // 雾气的颜色
+                "color": "#ffffff",
+                // 高空的颜色
+                "high-color": "red",
+                // 雾气的密度
+                "space-color": "blue"
+                
+            })
         })
     </script>
 </body>
