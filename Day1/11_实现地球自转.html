@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        /* new ol.Map */
+        const gaode = {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        }
+        const map = new mapboxgl.Map({
+            /* 
+            openlayer -target
+            将实例化的地图挂载到对应的DOM元素上
+             */
+            container: 'map', // container ID
+            /* style 相当于openlayer的layers */
+            style: gaode, // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 1.5, // starting zoom
+            projection: "globe"
+        });
+        map.on("style.load", () => {
+            /* map.setFog可以设置背景 */
+            map.setFog({
+                /* 大气层 */
+
+            })
+        })
+        /* 实现地球自转 */
+        let isRotate = false;
+        let timer = null;
+        map.on("click", () => {
+            /* 获取经度 */
+            // let center = map.getCenter();
+            // console.log(center);
+            // center.lng+=10;
+            // console.log(center)
+            // map.setCenter(center)
+            isRotate = !isRotate;
+            if (isRotate) {
+                timer = setInterval(() => {
+                    let center = map.getCenter();
+                    center.lng += 10;
+                    map.setCenter(center)
+                }, 30)
+            } else {
+                clearInterval(timer)
+            }
+
+        })
+    </script>
+</body>
+
+</html>
