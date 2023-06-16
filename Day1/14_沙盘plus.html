@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        /* new ol.Map */
+        const gaode = {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        }
+        const map = new mapboxgl.Map({
+            /* 
+            openlayer -target
+            将实例化的地图挂载到对应的DOM元素上
+             */
+            container: 'map', // container ID
+            /* style 相当于openlayer的layers */
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [6.6301, 45.35625], // starting position [lng, lat]
+            zoom: 12, // starting zoom
+            pitch: 80
+        });
+        map.on("style.load", () => {
+            /* map.setFog可以设置背景 */
+            map.setFog({
+                /* 大气层 */
+
+            })
+            /* 提供了dem */
+            map.addSource('mapbox-dem', {
+                'type': 'raster-dem',
+                url: 'mapbox://mapbox.mapbox-terrain-dem-v1'
+            })
+            map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 })
+        })
+
+
+        function rorateMap() {
+            /* easeTo */
+            let bearing = map.getBearing();
+            bearing += 10;
+            map.easeTo({
+                bearing,
+                duration: 500,
+                easing: n => n
+            })
+            if (bearing < 0) {
+                /* night */
+                map.setFog({
+                    range: [-1, 2],
+                    "horizon-blend": 0.3,
+                    color: "#242B4B",
+                    "high-color": "#161B36",
+                    "space-color": "#0B1026",
+                    "star-intensity": 0.8,
+                });
+            } else {
+                /* 白天 */
+                map.setFog({
+                    range: [-1, 2],
+                    "horizon-blend": 0.3,
+                    color: "white",
+                    "high-color": "#add8e6",
+                    "space-color": "#d8f2ff",
+                    "star-intensity": 0.0,
+                });
+            }
+        }
+        map.on("moveend", () => {
+            rorateMap();
+        })
+        setTimeout(() => {
+            rorateMap();
+        }, 5000)
+    </script>
+</body>
+
+</html>
