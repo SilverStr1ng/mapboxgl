@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/@antv/l7"></script>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        const token = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        /* new ol.Map */
+        const gaode = {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        }
+        /* L7  实现地理数据的可视化 
+        mapbox  地图 图层
+         */
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.Mapbox({
+                style: gaode, // 样式URL
+                center: [120.19382669582967, 30.258134],
+                pitch: 0,
+                zoom: 1.5,
+                projection: "globe",
+                token
+            }),
+        });
+        // 1、添加雾气效果
+        const map = scene.map;
+        map.on("style.load", () => {
+            map.setFog({})
+        })
+    </script>
+</body>
+
+</html>
