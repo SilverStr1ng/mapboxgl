@@ -5,43 +5,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="../plugins/mapboxgl-control-minimap.js"></script>
     <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
         * {
             margin: 0;
             padding: 0
         }
 
-        #map {
-            width: 100vw;
-            height: 100vh;
+        #mouse-position {
+            position: fixed;
+            z-index: 100;
+            bottom: 20px;
+            left: 50%;
         }
     </style>
 </head>
 
 <body>
-    <div id="map"></div>
+    <div id="mouse-position"></div>
+    <div id="map">
+
+    </div>
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
-
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        /* new ol.Map */
+        const gaode = {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        }
         const map = new mapboxgl.Map({
+            /* 
+            openlayer -target
+            将实例化的地图挂载到对应的DOM元素上
+             */
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            /* style 相当于openlayer的layers */
+            style: gaode, // style URL
             center: [114.30, 30.50], // starting position [lng, lat]
-            zoom: 9, // starting zoom
-            projection: 'globe',
+            zoom: 1.5, // starting zoom
+            projection: "globe"
         });
+        map.on("style.load", () => {
+            /* map.setFog可以设置背景 */
+            map.setFog({
+                /* 大气层 */
 
-        map.on('style.load', () => {
-            map.setFog({});
-        });
+            })
+            /* 全屏控件 */
+            map.addControl(new mapboxgl.FullscreenControl(), 'top-left')
+            /* 放大缩小 导航 */
+            map.addControl(
+                new mapboxgl.NavigationControl()
+            )
+            /* 属性控件 */
+            map.addControl(
+                new mapboxgl.AttributionControl({
+                    compact: true,
+                    customAttribution: ["中地", "GIS", "mapbox"]
+                })
+            )
+            /* 比例尺控件 */
+            map.addControl(
+                new mapboxgl.ScaleControl({
 
-        // 全屏控件
-        map.addControl(new mapboxgl.FullscreenControl());
-
-        // 导航控件
-        map.addControl(new mapboxgl.NavigationControl());
+                })
+            )
+            /*  鹰眼控件 */
+            map.addControl(new mapboxgl.Minimap({
+                center: [114, 30],
+                zoom: 6,
+                zoomLevels: []
+            }), 'top-right');
+        })
+        /* 获取鼠标位置 */
+        map.on("mousemove", evt => {
+            console.log(evt)
+            const { lng, lat } = evt.lngLat
+            document.getElementById("mouse-position").innerHTML = `
+            经度:${lng.toFixed(2)},纬度:${lat.toFixed(2)}
+            `
+        })
     </script>
 </body>
 

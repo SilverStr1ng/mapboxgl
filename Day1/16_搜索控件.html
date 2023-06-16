@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 1、导入mapbox的依赖 -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+        type="text/css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 2、需要设置地图容器的挂载点 -->
+    <div id="map"></div>
+    <script>
+        /* 3、实例化地图 */
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        /* new ol.Map */
+        const map = new mapboxgl.Map({
+            /* 
+            openlayer -target
+            将实例化的地图挂载到对应的DOM元素上
+             */
+            container: 'map', // container ID
+            /* style 相当于openlayer的layers */
+            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+        });
+        map.on("load", () => {
+            map.addControl(new MapboxLanguage({
+                defaultLanguage: 'zh-Hans'  // 设置默认语言
+            }))
+            // Add the control to the map.
+            map.addControl(
+                new MapboxGeocoder({
+                    accessToken: mapboxgl.accessToken,
+                    zoom: 4,
+                    placeholder: '请输入地址',
+                    mapboxgl: mapboxgl,
+                    reverseGeocode: true
+                })
+            );
+        })
+    </script>
+</body>
+
+</html>
