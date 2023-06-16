@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/@antv/l7"></script>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        const token = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        /* new ol.Map */
+        const gaode = {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        }
+        /* L7  实现地理数据的可视化 
+        mapbox  地图 图层
+         */
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.Mapbox({
+                style: gaode, // 样式URL
+                center: [114.050008, 22.529272],
+                pitch: 0,
+                zoom: 14,
+                projection: "globe",
+                token
+            }),
+        });
+        const map = scene.map;
+        map.on("style.load", () => {
+            map.setFog({})
+        })
+        /* L7.PolyonLayer */
+        // 加载深圳市的白模数据
+        scene.on("loaded", () => {
+            fetch("https://gw.alipayobjects.com/os/basement_prod/972566c5-a2b9-4a7e-8da1-bae9d0eb0117.json")
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    const layer = new L7.PolygonLayer({})
+                    layer.source(data)
+                        .shape("extrude")
+                        /* size(value)  可以直接获取geojson中properties中的属性值 */
+                        .size("h20")
+                        .active(true)
+                    scene.addLayer(layer)
+                })
+        })
+    </script>
+</body>
+
+</html>
