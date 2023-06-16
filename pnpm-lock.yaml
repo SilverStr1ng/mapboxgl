@@ -1,0 +1,224 @@
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  mapbox-gl:
+    specifier: ^2.15.0
+    version: registry.npmmirror.com/mapbox-gl@2.15.0
+
+packages:
+
+  registry.npmmirror.com/@mapbox/geojson-rewind@0.5.2:
+    resolution: {integrity: sha512-tJaT+RbYGJYStt7wI3cq4Nl4SXxG8W7JDG5DMJu97V25RnbNg3QtQtf+KD+VLjNpWKYsRvXDNmNrBgEETr1ifA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/geojson-rewind/-/geojson-rewind-0.5.2.tgz}
+    name: '@mapbox/geojson-rewind'
+    version: 0.5.2
+    hasBin: true
+    dependencies:
+      get-stream: registry.npmmirror.com/get-stream@6.0.1
+      minimist: registry.npmmirror.com/minimist@1.2.8
+    dev: false
+
+  registry.npmmirror.com/@mapbox/jsonlint-lines-primitives@2.0.2:
+    resolution: {integrity: sha512-rY0o9A5ECsTQRVhv7tL/OyDpGAoUB4tTvLiW1DSzQGq4bvTPhNw1VpSNjDJc5GFZ2XuyOtSWSVN05qOtcD71qQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/jsonlint-lines-primitives/-/jsonlint-lines-primitives-2.0.2.tgz}
+    name: '@mapbox/jsonlint-lines-primitives'
+    version: 2.0.2
+    engines: {node: '>= 0.6'}
+    dev: false
+
+  registry.npmmirror.com/@mapbox/mapbox-gl-supported@2.0.1:
+    resolution: {integrity: sha512-HP6XvfNIzfoMVfyGjBckjiAOQK9WfX0ywdLubuPMPv+Vqf5fj0uCbgBQYpiqcWZT6cbyyRnTSXDheT1ugvF6UQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/mapbox-gl-supported/-/mapbox-gl-supported-2.0.1.tgz}
+    name: '@mapbox/mapbox-gl-supported'
+    version: 2.0.1
+    dev: false
+
+  registry.npmmirror.com/@mapbox/point-geometry@0.1.0:
+    resolution: {integrity: sha512-6j56HdLTwWGO0fJPlrZtdU/B13q8Uwmo18Ck2GnGgN9PCFyKTZ3UbXeEdRFh18i9XQ92eH2VdtpJHpBD3aripQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz}
+    name: '@mapbox/point-geometry'
+    version: 0.1.0
+    dev: false
+
+  registry.npmmirror.com/@mapbox/tiny-sdf@2.0.6:
+    resolution: {integrity: sha512-qMqa27TLw+ZQz5Jk+RcwZGH7BQf5G/TrutJhspsca/3SHwmgKQ1iq+d3Jxz5oysPVYTGP6aXxCo5Lk9Er6YBAA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/tiny-sdf/-/tiny-sdf-2.0.6.tgz}
+    name: '@mapbox/tiny-sdf'
+    version: 2.0.6
+    dev: false
+
+  registry.npmmirror.com/@mapbox/unitbezier@0.0.1:
+    resolution: {integrity: sha512-nMkuDXFv60aBr9soUG5q+GvZYL+2KZHVvsqFCzqnkGEf46U2fvmytHaEVc1/YZbiLn8X+eR3QzX1+dwDO1lxlw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/unitbezier/-/unitbezier-0.0.1.tgz}
+    name: '@mapbox/unitbezier'
+    version: 0.0.1
+    dev: false
+
+  registry.npmmirror.com/@mapbox/vector-tile@1.3.1:
+    resolution: {integrity: sha512-MCEddb8u44/xfQ3oD+Srl/tNcQoqTw3goGk2oLsrFxOTc3dUp+kAnby3PvAeeBYSMSjSPD1nd1AJA6W49WnoUw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/vector-tile/-/vector-tile-1.3.1.tgz}
+    name: '@mapbox/vector-tile'
+    version: 1.3.1
+    dependencies:
+      '@mapbox/point-geometry': registry.npmmirror.com/@mapbox/point-geometry@0.1.0
+    dev: false
+
+  registry.npmmirror.com/@mapbox/whoots-js@3.1.0:
+    resolution: {integrity: sha512-Es6WcD0nO5l+2BOQS4uLfNPYQaNDfbot3X1XUoloz+x0mPDS3eeORZJl06HXjwBG1fOGwCRnzK88LMdxKRrd6Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@mapbox/whoots-js/-/whoots-js-3.1.0.tgz}
+    name: '@mapbox/whoots-js'
+    version: 3.1.0
+    engines: {node: '>=6.0.0'}
+    dev: false
+
+  registry.npmmirror.com/csscolorparser@1.0.3:
+    resolution: {integrity: sha512-umPSgYwZkdFoUrH5hIq5kf0wPSXiro51nPw0j2K/c83KflkPSTBGMz6NJvMB+07VlL0y7VPo6QJcDjcgKTTm3w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/csscolorparser/-/csscolorparser-1.0.3.tgz}
+    name: csscolorparser
+    version: 1.0.3
+    dev: false
+
+  registry.npmmirror.com/earcut@2.2.4:
+    resolution: {integrity: sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/earcut/-/earcut-2.2.4.tgz}
+    name: earcut
+    version: 2.2.4
+    dev: false
+
+  registry.npmmirror.com/geojson-vt@3.2.1:
+    resolution: {integrity: sha512-EvGQQi/zPrDA6zr6BnJD/YhwAkBP8nnJ9emh3EnHQKVMfg/MRVtPbMYdgVy/IaEmn4UfagD2a6fafPDL5hbtwg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/geojson-vt/-/geojson-vt-3.2.1.tgz}
+    name: geojson-vt
+    version: 3.2.1
+    dev: false
+
+  registry.npmmirror.com/get-stream@6.0.1:
+    resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/get-stream/-/get-stream-6.0.1.tgz}
+    name: get-stream
+    version: 6.0.1
+    engines: {node: '>=10'}
+    dev: false
+
+  registry.npmmirror.com/gl-matrix@3.4.3:
+    resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/gl-matrix/-/gl-matrix-3.4.3.tgz}
+    name: gl-matrix
+    version: 3.4.3
+    dev: false
+
+  registry.npmmirror.com/grid-index@1.1.0:
+    resolution: {integrity: sha512-HZRwumpOGUrHyxO5bqKZL0B0GlUpwtCAzZ42sgxUPniu33R1LSFH5yrIcBCHjkctCAh3mtWKcKd9J4vDDdeVHA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/grid-index/-/grid-index-1.1.0.tgz}
+    name: grid-index
+    version: 1.1.0
+    dev: false
+
+  registry.npmmirror.com/ieee754@1.2.1:
+    resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ieee754/-/ieee754-1.2.1.tgz}
+    name: ieee754
+    version: 1.2.1
+    dev: false
+
+  registry.npmmirror.com/kdbush@4.0.2:
+    resolution: {integrity: sha512-WbCVYJ27Sz8zi9Q7Q0xHC+05iwkm3Znipc2XTlrnJbsHMYktW4hPhXUE8Ys1engBrvffoSCqbil1JQAa7clRpA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/kdbush/-/kdbush-4.0.2.tgz}
+    name: kdbush
+    version: 4.0.2
+    dev: false
+
+  registry.npmmirror.com/mapbox-gl@2.15.0:
+    resolution: {integrity: sha512-fjv+aYrd5TIHiL7wRa+W7KjtUqKWziJMZUkK5hm8TvJ3OLeNPx4NmW/DgfYhd/jHej8wWL+QJBDbdMMAKvNC0A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/mapbox-gl/-/mapbox-gl-2.15.0.tgz}
+    name: mapbox-gl
+    version: 2.15.0
+    dependencies:
+      '@mapbox/geojson-rewind': registry.npmmirror.com/@mapbox/geojson-rewind@0.5.2
+      '@mapbox/jsonlint-lines-primitives': registry.npmmirror.com/@mapbox/jsonlint-lines-primitives@2.0.2
+      '@mapbox/mapbox-gl-supported': registry.npmmirror.com/@mapbox/mapbox-gl-supported@2.0.1
+      '@mapbox/point-geometry': registry.npmmirror.com/@mapbox/point-geometry@0.1.0
+      '@mapbox/tiny-sdf': registry.npmmirror.com/@mapbox/tiny-sdf@2.0.6
+      '@mapbox/unitbezier': registry.npmmirror.com/@mapbox/unitbezier@0.0.1
+      '@mapbox/vector-tile': registry.npmmirror.com/@mapbox/vector-tile@1.3.1
+      '@mapbox/whoots-js': registry.npmmirror.com/@mapbox/whoots-js@3.1.0
+      csscolorparser: registry.npmmirror.com/csscolorparser@1.0.3
+      earcut: registry.npmmirror.com/earcut@2.2.4
+      geojson-vt: registry.npmmirror.com/geojson-vt@3.2.1
+      gl-matrix: registry.npmmirror.com/gl-matrix@3.4.3
+      grid-index: registry.npmmirror.com/grid-index@1.1.0
+      kdbush: registry.npmmirror.com/kdbush@4.0.2
+      murmurhash-js: registry.npmmirror.com/murmurhash-js@1.0.0
+      pbf: registry.npmmirror.com/pbf@3.2.1
+      potpack: registry.npmmirror.com/potpack@2.0.0
+      quickselect: registry.npmmirror.com/quickselect@2.0.0
+      rw: registry.npmmirror.com/rw@1.3.3
+      supercluster: registry.npmmirror.com/supercluster@8.0.1
+      tinyqueue: registry.npmmirror.com/tinyqueue@2.0.3
+      vt-pbf: registry.npmmirror.com/vt-pbf@3.1.3
+    dev: false
+
+  registry.npmmirror.com/minimist@1.2.8:
+    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/minimist/-/minimist-1.2.8.tgz}
+    name: minimist
+    version: 1.2.8
+    dev: false
+
+  registry.npmmirror.com/murmurhash-js@1.0.0:
+    resolution: {integrity: sha512-TvmkNhkv8yct0SVBSy+o8wYzXjE4Zz3PCesbfs8HiCXXdcTuocApFv11UWlNFWKYsP2okqrhb7JNlSm9InBhIw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/murmurhash-js/-/murmurhash-js-1.0.0.tgz}
+    name: murmurhash-js
+    version: 1.0.0
+    dev: false
+
+  registry.npmmirror.com/pbf@3.2.1:
+    resolution: {integrity: sha512-ClrV7pNOn7rtmoQVF4TS1vyU0WhYRnP92fzbfF75jAIwpnzdJXf8iTd4CMEqO4yUenH6NDqLiwjqlh6QgZzgLQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/pbf/-/pbf-3.2.1.tgz}
+    name: pbf
+    version: 3.2.1
+    hasBin: true
+    dependencies:
+      ieee754: registry.npmmirror.com/ieee754@1.2.1
+      resolve-protobuf-schema: registry.npmmirror.com/resolve-protobuf-schema@2.1.0
+    dev: false
+
+  registry.npmmirror.com/potpack@2.0.0:
+    resolution: {integrity: sha512-Q+/tYsFU9r7xoOJ+y/ZTtdVQwTWfzjbiXBDMM/JKUux3+QPP02iUuIoeBQ+Ot6oEDlC+/PGjB/5A3K7KKb7hcw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/potpack/-/potpack-2.0.0.tgz}
+    name: potpack
+    version: 2.0.0
+    dev: false
+
+  registry.npmmirror.com/protocol-buffers-schema@3.6.0:
+    resolution: {integrity: sha512-TdDRD+/QNdrCGCE7v8340QyuXd4kIWIgapsE2+n/SaGiSSbomYl4TjHlvIoCWRpE7wFt02EpB35VVA2ImcBVqw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/protocol-buffers-schema/-/protocol-buffers-schema-3.6.0.tgz}
+    name: protocol-buffers-schema
+    version: 3.6.0
+    dev: false
+
+  registry.npmmirror.com/quickselect@2.0.0:
+    resolution: {integrity: sha512-RKJ22hX8mHe3Y6wH/N3wCM6BWtjaxIyyUIkpHOvfFnxdI4yD4tBXEBKSbriGujF6jnSVkJrffuo6vxACiSSxIw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/quickselect/-/quickselect-2.0.0.tgz}
+    name: quickselect
+    version: 2.0.0
+    dev: false
+
+  registry.npmmirror.com/resolve-protobuf-schema@2.1.0:
+    resolution: {integrity: sha512-kI5ffTiZWmJaS/huM8wZfEMer1eRd7oJQhDuxeCLe3t7N7mX3z94CN0xPxBQxFYQTSNz9T0i+v6inKqSdK8xrQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/resolve-protobuf-schema/-/resolve-protobuf-schema-2.1.0.tgz}
+    name: resolve-protobuf-schema
+    version: 2.1.0
+    dependencies:
+      protocol-buffers-schema: registry.npmmirror.com/protocol-buffers-schema@3.6.0
+    dev: false
+
+  registry.npmmirror.com/rw@1.3.3:
+    resolution: {integrity: sha512-PdhdWy89SiZogBLaw42zdeqtRJ//zFd2PgQavcICDUgJT5oW10QCRKbJ6bg4r0/UY2M6BWd5tkxuGFRvCkgfHQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/rw/-/rw-1.3.3.tgz}
+    name: rw
+    version: 1.3.3
+    dev: false
+
+  registry.npmmirror.com/supercluster@8.0.1:
+    resolution: {integrity: sha512-IiOea5kJ9iqzD2t7QJq/cREyLHTtSmUT6gQsweojg9WH2sYJqZK9SswTu6jrscO6D1G5v5vYZ9ru/eq85lXeZQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/supercluster/-/supercluster-8.0.1.tgz}
+    name: supercluster
+    version: 8.0.1
+    dependencies:
+      kdbush: registry.npmmirror.com/kdbush@4.0.2
+    dev: false
+
+  registry.npmmirror.com/tinyqueue@2.0.3:
+    resolution: {integrity: sha512-ppJZNDuKGgxzkHihX8v9v9G5f+18gzaTfrukGrq6ueg0lmH4nqVnA2IPG0AEH3jKEk2GRJCUhDoqpoiw3PHLBA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tinyqueue/-/tinyqueue-2.0.3.tgz}
+    name: tinyqueue
+    version: 2.0.3
+    dev: false
+
+  registry.npmmirror.com/vt-pbf@3.1.3:
+    resolution: {integrity: sha512-2LzDFzt0mZKZ9IpVF2r69G9bXaP2Q2sArJCmcCgvfTdCCZzSyz4aCLoQyUilu37Ll56tCblIZrXFIjNUpGIlmA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vt-pbf/-/vt-pbf-3.1.3.tgz}
+    name: vt-pbf
+    version: 3.1.3
+    dependencies:
+      '@mapbox/point-geometry': registry.npmmirror.com/@mapbox/point-geometry@0.1.0
+      '@mapbox/vector-tile': registry.npmmirror.com/@mapbox/vector-tile@1.3.1
+      pbf: registry.npmmirror.com/pbf@3.2.1
+    dev: false
