@@ -62,6 +62,9 @@
             // map.setFog 的作用是设置雾气效果, 如果不设置, 则地图会显示为白色;
             // 如果不传参数, 则会显示为默认的雾气效果;
             map.setFog({})
+
+            // 禁用双击放大
+            map.doubleClickZoom.disable()
         })
 
         map.on("click", () => {
