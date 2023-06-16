@@ -54,19 +54,35 @@
             },
             center: [114.30, 30.50],
             zoom: 6,
-            projection: 'globe'
+            projection: 'globe',
+            bearing: 0,
+            pitch: 60,
         })
         map.on("style.load", () => {
             // map.setFog 的作用是设置雾气效果, 如果不设置, 则地图会显示为白色;
             // 如果不传参数, 则会显示为默认的雾气效果;
             map.setFog({
-                // 雾气的颜色
-                "color": "#ffffff",
-                // 高空的颜色
-                "high-color": "red",
-                // 雾气的密度
-                "space-color": "blue" 
             })
+
+            map.doubleClickZoom.disable()
+        })
+
+
+        // 实现点击之后旋转的沙盒效果
+        let timer = null
+
+        isRotate = false
+        map.on("click", () => {
+            isRotate = !isRotate
+            if (!isRotate) {
+                timer = setInterval(() => {
+                    let bearing = map.getBearing()
+                    bearing += 1
+                    map.setBearing(bearing)
+                }, 50)
+            } else {
+                clearInterval(timer)
+            }
         })
     </script>
 </body>
