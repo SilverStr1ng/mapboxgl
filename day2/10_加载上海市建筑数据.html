@@ -45,7 +45,18 @@
                 type: 'fill-extrusion',
                 source: 'building',
                 paint: {
-                    'fill-extrusion-color': '#ff2222',
+                    'fill-extrusion-color': [
+                        // 根据不同的高度设置不同的颜色
+                        // interpolate是插值函数，linear是线性插值
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'floor'],
+                        //不同高度设置不同颜色
+                        0, '#EED322',
+                        50, '#A67FB5',
+                        75, '#C997C7',
+                        100, '#DEB8D4',
+                        250, '#CA8323'],
                     'fill-extrusion-height': ['get', 'floor'],
                     'fill-extrusion-opacity': 0.6,
                 },
