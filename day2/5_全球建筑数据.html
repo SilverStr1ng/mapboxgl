@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 1、导入mapbox依赖 -->
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        /* 初始地图 */
+        mapboxgl.accessToken =
+            "pk.eyJ1IjoiY2hlbmdjaGFvY2hhbyIsImEiOiJjbGU1aDZ2eWUwMXp4M29udmFnNnNyZjBhIn0.2Kd0ZX06ReEdBnZ9XU4XUA";
+        const map = new mapboxgl.Map({
+            container: "map", // container ID
+            style: "mapbox://styles/mapbox/streets-v12", // style URL
+            center: [114.40, 30.465],
+            zoom: 16,
+            pitch: 45,
+            projection: "globe",
+        });
+        map.on("click", (evt) => {
+            console.log(evt)
+        })
+        map.on("load", () => {
+            // Start the animation.
+
+            // Add 3D buildings and remove label layers to enhance the map
+
+
+            map.addLayer({
+                id: "3d-buildings",
+                source: "composite",
+                "source-layer": "building",
+                // filter: ["==", "extrude", "true"],
+                type: "fill-extrusion",
+                paint: {
+                    'fill-extrusion-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'height'],
+                        //不同高度设置不同颜色
+                        0, '#EED322',
+                        50, '#A67FB5',
+                        75, '#C997C7',
+                        100, '#DEB8D4',
+                        250, '#CA8323'
+                    ],
+
+                    "fill-extrusion-height": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        1,
+                        0,
+                        8,
+                        ["get", "height"],
+                    ],
+
+                    "fill-extrusion-base": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        1,
+                        0,
+                        8,
+                        ["get", "min_height"],
+                    ],
+                    "fill-extrusion-opacity": 0.6,
+                },
+
+            });
+        });
+    </script>
+</body>
+
+</html>

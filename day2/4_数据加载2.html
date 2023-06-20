@@ -35,30 +35,19 @@
 
         map.on('style.load', () => {
             map.setFog({});
-            // mapbox无法单独设置描边， 只能额外设置一个描边图层
+            // addSource + addLayer添加数据
+            // 有更好的可读性和可维护性
+            map.addSource('data-source', {
+                type: 'geojson',
+                data: 'https://geo.datav.aliyun.com/areas_v3/bound/420000_full.json',
+            })
             map.addLayer({
-                id: 'data-source',
+                id: 'xzd',
                 type: 'fill',
-                source: ({
-                    type: 'geojson',
-                    data: 'https://docs.mapbox.com/mapbox-gl-js/assets/ne_50m_urban_areas.geojson'
-                }),
+                source: 'data-source',
                 paint: ({
                     'fill-color': '#088',
                     'fill-opacity': 0.8,
-                })
-            })
-            // 设置描边图层
-            map.addLayer({
-                id: 'data-source-border',
-                type: 'line',
-                source: ({
-                    type: 'geojson',
-                    data: 'https://docs.mapbox.com/mapbox-gl-js/assets/ne_50m_urban_areas.geojson'
-                }),
-                paint: ({
-                    'line-color': '#000',
-                    'line-width': 2
                 })
             })
         });
