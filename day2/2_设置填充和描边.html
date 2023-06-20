@@ -35,6 +35,7 @@
 
         map.on('style.load', () => {
             map.setFog({});
+            // mapbox无法单独设置描边， 只能额外设置一个描边图层
             map.addLayer({
                 id: 'data-source',
                 type: 'fill',
