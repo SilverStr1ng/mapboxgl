@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            projection: 'globe',
+        });
+
+        map.on('style.load', () => {
+            map.setFog({});
+            map.addLayer({
+                id: 'data-source',
+                type: 'fill',
+                source: ({
+                    type: 'geojson',
+                    data: 'https://docs.mapbox.com/mapbox-gl-js/assets/ne_50m_urban_areas.geojson'
+                }),
+                paint: ({
+                    'fill-color': '#088',
+                    'fill-opacity': 0.8
+                })
+            })
+            // 设置描边图层
+            map.addLayer({
+                id: 'data-source-border',
+                type: 'line',
+                source: ({
+                    type: 'geojson',
+                    data: 'https://docs.mapbox.com/mapbox-gl-js/assets/ne_50m_urban_areas.geojson'
+                }),
+                paint: ({
+                    'line-color': '#000',
+                    'line-width': 2
+                })
+            })
+        });
+    </script>
+</body>
+
+</html>
