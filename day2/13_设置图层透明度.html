@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 1、导入mapbox依赖 -->
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #range {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="range">
+        <label id="range-value">Layer Opacity: 1.00</label>
+        <input type="range" min="0" max="100" step="0" value="100" id="range-bar">
+    </div>
+    <div id="map"></div>
+    <script>
+        /* 初始地图 */
+        mapboxgl.accessToken =
+            "pk.eyJ1IjoiY2hlbmdjaGFvY2hhbyIsImEiOiJjbGU1aDZ2eWUwMXp4M29udmFnNnNyZjBhIn0.2Kd0ZX06ReEdBnZ9XU4XUA";
+        const map = new mapboxgl.Map({
+            container: "map", // container ID
+            style: "mapbox://styles/mapbox/streets-v12", // style URL
+            center: [114.40, 30.465],
+            zoom: 16,
+            pitch: 45,
+            projection: "globe",
+        });
+        map.on("click", (evt) => {
+            console.log(evt)
+        })
+        map.on("load", () => {
+            map.addSource("zhongdi", {
+                type: "geojson",
+                data: 'http://39.103.151.139:8000/gis/zhongdi'
+            })
+            map.addLayer({
+                id: "fill-zhongdi",
+                type: "fill-extrusion",
+                source: "zhongdi",
+                paint: {
+                    "fill-extrusion-color": "#652e80",
+                    //可以获取properties属性中的参数 ['get','people']
+                    "fill-extrusion-height": 200,
+                }
+            })
+        });
+
+        // 禁用双击放大
+        map.doubleClickZoom.disable();
+
+        // jquery实现
+        $("#range-bar").on("input", function () {
+            const value = $(this).val();
+            $("#range-value").text(`Layer Opacity: ${(value / 100).toFixed(2)}`);
+            map.setPaintProperty("fill-zhongdi", "fill-extrusion-opacity", value / 100);
+        });
+
+
+    </script>
+</body>
+
+</html>
