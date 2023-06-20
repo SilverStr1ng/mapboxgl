@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            projection: 'globe',
+        });
+
+        const data = {
+            type: 'FeatureCollection',
+            features: [{
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [114.30, 30.50]
+                },
+            }]
+        }
+
+        /**
+         * type: circle | line | fill | symbol | raster | fill-extrusion | heatmap | hillshade | background | sky | custom
+         * 类型: 圆形 | 线 | 填充 | 符号 | 光栅 | 填充挤出 | 热力图 | 阴影 | 背景 | 天空 | 自定义
+         * fill-extrusion: 填充挤出  用于3D建筑
+         * symbol: 符号  用于标记
+         */
+
+        map.on('style.load', () => {
+            map.setFog({});
+            // 数据加载只能放在 load | style.load 事件中, 不能直接放在 map.addLayer 中
+            map.addLayer({
+                id: 'point',
+                type: 'circle',
+                source: {
+                    type: 'geojson',
+                    data: data,
+                },
+                paint: {
+                    'circle-radius': 30,
+                    'circle-color': 'red',
+                    'circle-opacity': 0.5,
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': 'white',
+                }
+            })
+        });
+
+        // 点击事件, 将圆的颜色变为绿色, 将透明度累加0.1
+        map.on('click', () => {
+            map.setPaintProperty('point', 'circle-color', 'green');
+            let opacity = map.getPaintProperty('point', 'circle-opacity');
+            let newOpacity = opacity + 0.1;
+            if (newOpacity >= 1) {
+                newOpacity = 0.1;
+            }
+            map.setPaintProperty('point', 'circle-opacity', newOpacity);
+        })
+
+        // 取消地图双击
+        map.doubleClickZoom.disable();
+    </script>
+</body>
+
+</html>
