@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+        /* new ol.Map */
+        const gaode = {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        };
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: gaode, // style URL
+            // 深圳市
+            center: [114.085947, 22.547],
+            zoom: 15, // starting zoom
+            pitch: 60,
+            projection: "globe"
+        });
+        map.on("style.load", () => {
+            /* map.setFog可以设置背景 */
+            map.setFog({});
+            map.addSource("building", {
+                type: "geojson",
+                data: "https://gw.alipayobjects.com/os/basement_prod/972566c5-a2b9-4a7e-8da1-bae9d0eb0117.json",
+                generateId: true
+            });
+            map.addLayer({
+                id: "building",
+                type: "fill-extrusion",
+                source: "building",
+                paint: {
+                    "fill-extrusion-color": [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "h20"],
+                        0, "#EED322",
+                        50, "#A67FB5",
+                        75, "#C997C7",
+                        100, "#DEB8D4",
+                        250, "#CA8323"
+                    ],
+                    "fill-extrusion-height": ["get", "h20"],
+                    "fill-extrusion-opacity": 0.6
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
