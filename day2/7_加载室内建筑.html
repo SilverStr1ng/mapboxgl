@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 1、导入mapbox依赖 -->
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        /* 初始地图 */
+        mapboxgl.accessToken =
+            "pk.eyJ1IjoiY2hlbmdjaGFvY2hhbyIsImEiOiJjbGU1aDZ2eWUwMXp4M29udmFnNnNyZjBhIn0.2Kd0ZX06ReEdBnZ9XU4XUA";
+        const map = new mapboxgl.Map({
+            container: "map",
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: "mapbox://styles/mapbox/streets-v12",
+            center: [-87.61694, 41.86625],
+            zoom: 15.99,
+            pitch: 40,
+            bearing: 20,
+            antialias: true,
+        });
+
+        map.on("load", () => {
+            map.addSource("floorplan", {
+                type: "geojson",
+                /*
+                 * Each feature in this GeoJSON file contains values for
+                 * `properties.height`, `properties.base_height`,
+                 * and `properties.color`.
+                 * In `addLayer` you will use expressions to set the new
+                 * layer's paint properties based on these values.
+                 */
+                data: "https://docs.mapbox.com/mapbox-gl-js/assets/indoor-3d-map.geojson",
+            });
+            map.addLayer({
+                id: "room-extrusion",
+                type: "fill-extrusion",
+                source: "floorplan",
+                paint: {
+                    // Get the `fill-extrusion-color` from the source `color` property.
+                    "fill-extrusion-color": ["get", "color"],
+
+                    // Get `fill-extrusion-height` from the source `height` property.
+                    "fill-extrusion-height": ["get", "height"],
+
+                    // Get `fill-extrusion-base` from the source `base_height` property.
+                    "fill-extrusion-base": ["get", "base_height"],
+
+                    // Make extrusions slightly opaque to see through indoor walls.
+                    "fill-extrusion-opacity": 0.5,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
