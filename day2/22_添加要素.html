@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #clear {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 999;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="clear"></div>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            projection: 'globe',
+        });
+
+        map.on('style.load', () => {
+            map.setFog({});
+        });
+
+        // 添加要素
+        map.on('click', (e) => {
+            const { lng, lat } = e.lngLat;
+            const data = {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [lng, lat]
+                },
+            }
+
+            map.addLayer({
+                id: 'point' + Math.random(),
+                type: 'circle',
+                source: {
+                    type: 'geojson',
+                    data,
+                },
+                paint: {
+                    'circle-radius': 10,
+                    'circle-color': '#f00',
+                }
+            });
+        });
+
+        // 清除要素
+        $('#clear').on('click', () => {
+            const layers = map.getStyle().layers;
+            layers.forEach((layer) => {
+                if (layer.id.indexOf('point') > -1) {
+                    map.removeLayer(layer.id);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

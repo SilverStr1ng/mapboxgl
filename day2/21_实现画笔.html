@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css"
+        type="text/css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            projection: 'globe',
+        });
+
+        map.on('style.load', () => {
+            map.setFog({});
+            map.addControl(new mapboxgl.NavigationControl())
+            var draw = new MapboxDraw({
+                //不允许使用键盘交互绘制
+                keybindings: false,
+                //设置为ture，可按住shift+拉框来拾取图形
+                boxSelect: true,
+                //点击要素时的响应半径（像素单位）
+                clickBuffer: 5,
+                //默认控件显示方式。如果设置为true，则会添加所有的绘图控件
+                displayControlsDefault: false,
+                //添加指定的绘制控件
+                controls: {
+                    //绘制线控件
+                    line_string: true,
+                    //绘制多边形控件
+                    polygon: true,
+                    //绘制点控件
+                    point: true,
+                    //删除图形控件
+                    trash: true
+                }
+            });
+            //将绘制控件添加到左上角
+            map.addControl(draw, 'top-left');
+            map.on("draw.create", handleDraw);
+            function handleDraw(e) {
+                var position = e.features[0].geometry.coordinates;
+                console.log(position);
+            }
+        });
+    </script>
+</body>
+
+</html>
