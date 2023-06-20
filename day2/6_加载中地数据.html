@@ -67,13 +67,13 @@
 
         // 禁用双击放大
         map.doubleClickZoom.disable();
-        
+
         // 按住鼠标 楼房高度不断增加
         map.on("mousedown", () => {
             let height = map.getPaintProperty("fill-zhongdi", "fill-extrusion-height")
             let timer = setInterval(() => {
-                map.setPaintProperty("fill-zhongdi", "fill-extrusion-height", height + 10)
-                height += 10
+                height += 10,
+                map.setPaintProperty("fill-zhongdi", "fill-extrusion-height", height)
             }, 10)
             map.on("mouseup", () => {
                 clearInterval(timer)
