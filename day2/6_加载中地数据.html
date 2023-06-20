@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 1、导入mapbox依赖 -->
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        /* 初始地图 */
+        mapboxgl.accessToken =
+            "pk.eyJ1IjoiY2hlbmdjaGFvY2hhbyIsImEiOiJjbGU1aDZ2eWUwMXp4M29udmFnNnNyZjBhIn0.2Kd0ZX06ReEdBnZ9XU4XUA";
+        const map = new mapboxgl.Map({
+            container: "map", // container ID
+            style: "mapbox://styles/mapbox/streets-v12", // style URL
+            center: [114.40, 30.465],
+            zoom: 16,
+            pitch: 45,
+            projection: "globe",
+        });
+        map.on("click", (evt) => {
+            console.log(evt)
+        })
+        map.on("load", () => {
+            map.addSource("zhongdi", {
+                type: "geojson",
+                data: 'http://39.103.151.139:8000/gis/zhongdi'
+            })
+            map.addLayer({
+                id: "fill-zhongdi",
+                type: "fill-extrusion",
+                source: "zhongdi",
+                paint: {
+                    "fill-extrusion-color": "#652e80",
+                    //可以获取properties属性中的参数 ['get','people']
+                    "fill-extrusion-height": 200,
+                    "fill-extrusion-opacity": 0.6,
+                    "fill-extrusion-base": 50
+                }
+            })
+        });
+
+        // // 点击楼房高度增加10
+        // map.on("click", () => {
+        //     let height = map.getPaintProperty("fill-zhongdi", "fill-extrusion-height")
+        //     map.setPaintProperty("fill-zhongdi", "fill-extrusion-height", height + 10)
+        // })
+
+        // 禁用双击放大
+        map.doubleClickZoom.disable();
+        
+        // 按住鼠标 楼房高度不断增加
+        map.on("mousedown", () => {
+            let height = map.getPaintProperty("fill-zhongdi", "fill-extrusion-height")
+            let timer = setInterval(() => {
+                map.setPaintProperty("fill-zhongdi", "fill-extrusion-height", height + 10)
+                height += 10
+            }, 10)
+            map.on("mouseup", () => {
+                clearInterval(timer)
+            })
+        })
+    </script>
+</body>
+
+</html>
