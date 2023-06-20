@@ -17,6 +17,16 @@
             width: 100vw;
             height: 100vh;
         }
+
+        .popup {
+            width: 200px;
+            height: 30px;
+            font-size: 20px;
+            background-color: white;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 
@@ -82,13 +92,24 @@
                 }
             })
         });
+        // 鼠标移入图层, 鼠标变成手指
+        map.on('mouseenter', 'point', () => {
+            map.getCanvas().style.cursor = 'wait';
+        });
+
+        // 鼠标移出图层, 鼠标变成默认
+        map.on('mouseleave', 'point', () => {
+            map.getCanvas().style.cursor = '';
+        });
 
         // 给图层绑定点击事件, 弹出name
         // 第二个参数是图层的id
         map.on('click', 'point', (e) => {
             console.log(e)
             const name = e.features[0].properties.name;
-            new mapboxgl.Popup()
+            new mapboxgl.Popup({
+                    className: 'popup',
+            })
                 .setLngLat(e.lngLat)
                 .setHTML(name)
                 .addTo(map);
