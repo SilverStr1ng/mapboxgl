@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+        /* new ol.Map */
+        const gaode = {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        };
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: gaode, // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 8, // starting zoom
+            projection: "globe"
+        });
+
+        const data = {
+            "type": "FeatureCollection",
+            "features": []
+        }
+
+
+        map.on("style.load", () => {
+            /* map.setFog可以设置背景 */
+            map.setFog({});
+            // 填充图层
+            map.addLayer({
+                id: 'hubei-fill',
+                type: 'fill',
+                source: {
+                    type: "geojson",
+                    data: 'https://geo.datav.aliyun.com/areas_v3/bound/420000_full.json',
+                },
+                paint: {
+                    'fill-color': 'red',
+                    'fill-opacity': 0.5
+                }
+            })
+
+            // 描边图层
+            map.addLayer({
+                id: 'hubei-line',
+                type: 'line',
+                source: {
+                    type: "geojson",
+                    data: 'https://geo.datav.aliyun.com/areas_v3/bound/420000_full.json',
+                },
+                paint: {
+                    'line-color': 'black',
+                    'line-width': 2,
+                }
+            })
+
+            // 高亮图层
+            map.addLayer({
+                id: 'hubei-highlight',
+                type: 'fill',
+                source: {
+                    type: "geojson",
+                    data: data,
+                },
+                paint: {
+                    'fill-color': 'yellow',
+                    'fill-opacity': 0.5
+                }
+            })
+
+        });
+
+        let popup = null;
+        // 鼠标点击事件
+        map.on("mousemove", "hubei-fill", (e) => {
+            // 鼠标样式
+            map.getCanvas().style.cursor = "pointer";
+
+
+            let feature = e.features[0];
+
+            let source = map.getSource("hubei-highlight");
+
+            source.setData(feature)
+
+            // 获取经纬度
+            const { lng, lat } = e.lngLat;
+            // adcode, name, level
+            const { adcode, name, level } = e.features[0].properties;
+            // 弹窗
+            if (popup) {
+                popup.remove();
+            }
+            popup = new mapboxgl.Popup({
+                offset: [0, -10]
+            })
+                .setLngLat([lng, lat])
+                .setHTML(`<h3>adcode:${adcode}</h3>\n<h3>name:${name}</h3>\n<h3>level:${level}</h3>`)
+                .addTo(map);
+        })
+
+        // 鼠标移出事件
+        map.on("mouseleave", "hubei-fill", () => {
+            if (popup) {
+                popup.remove();
+            }
+            let source = map.getSource("hubei-highlight");
+            source.setData(data)
+        })
+    </script>
+</body>
+
+</html>
