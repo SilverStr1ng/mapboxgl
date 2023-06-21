@@ -1,0 +1,20 @@
+{
+  "name": "vue-mock",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "mock": "json-server --watch MOCK/index.js --port 3004"
+  },
+  "dependencies": {
+    "json-server": "^0.17.3",
+    "mockjs": "^1.1.0",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.9"
+  }
+}
