@@ -101,7 +101,8 @@
             const name = e.features[0].properties.name;
             const lngLat = e.features[0].geometry.coordinates;
             new mapboxgl.Popup({
-                offset: [0, -15]
+                offset: [0, -15],
+                anchor: 'bottom-left'
             })
                 .setLngLat(lngLat)
                 .setHTML(name)
