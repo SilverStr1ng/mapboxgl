@@ -126,7 +126,8 @@
                 popup.remove();
             }
             popup = new mapboxgl.Popup({
-                offset: [0, -10]
+                offset: [0, -10],
+                closeButton: false,
             })
                 .setLngLat([lng, lat])
                 .setHTML(`<h3>adcode:${adcode}</h3>\n<h3>name:${name}</h3>\n<h3>level:${level}</h3>`)
