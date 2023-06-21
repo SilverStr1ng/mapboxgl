@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #marker {
+            background-image: url('https://img.gejiba.com/images/db6e7706e2c3dcae834e44b0e888c767.jpg');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="map">
+        <div id="marker"></div>
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            projection: 'globe',
+        });
+
+        map.on('style.load', () => {
+            map.setFog({});
+            var element = document.createElement("div");
+            element.id = "marker";
+            var marker = new mapboxgl.Marker({
+                element,
+                draggable: true
+            }).setLngLat([114.30, 30.50]);
+            map.on("load", () => {
+                marker.addTo(map);
+            });
+
+        });
+    </script>
+</body>
+
+</html>
