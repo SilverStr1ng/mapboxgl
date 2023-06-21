@@ -99,8 +99,11 @@
         // 点击要素, 弹出name属性
         map.on('click', 'points', (e) => {
             const name = e.features[0].properties.name;
-            new mapboxgl.Popup()
-                .setLngLat(e.lngLat)
+            const lngLat = e.features[0].geometry.coordinates;
+            new mapboxgl.Popup({
+                offset: [0, -15]
+            })
+                .setLngLat(lngLat)
                 .setHTML(name)
                 .addTo(map);
         });
