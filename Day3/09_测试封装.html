@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 1、导入依赖 -->
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="../utils/setCanvas.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 2、设置地图容器的挂载点 -->
+    <div id="map">
+
+    </div>
+    <script>
+        /* 3、实例化地图 */
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            /* style-layer */
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "type": "raster",
+                        "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 14, // starting zoom
+            pitch: 60
+        });
+        var data = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "name": "武汉"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.321557, 30.520756]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "name": "汉口"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.358787, 30.521922]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "name": "汉阳"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.332726, 30.506177]
+                    }
+                }
+            ]
+        }
+        /* 1、加载数据 */
+        map.on("load", () => {
+            setCanvas(map);
+            map.addSource("city-source", {
+                type: "geojson",
+                data
+            })
+            map.addLayer({
+                id: "city-layer",
+                type: "symbol",
+                source: "city-source",
+                layout: {
+                    'icon-image': 'canvas-icon'
+                }
+
+            })
+            map.on("mouseover", "city-layer", () => {
+                map.getCanvas().style.cursor = "wait"
+            })
+            map.on("mouseleave", "city-layer", () => {
+                map.getCanvas().style.cursor = "default"
+            })
+        })
+
+
+    </script>
+</body>
+
+</html>
