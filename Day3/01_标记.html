@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            projection: 'globe',
+        });
+
+        map.on('style.load', () => {
+            map.setFog({});
+            const marker = new mapboxgl.Marker({
+                color: '#FFFFFF',
+                draggable: true
+            }).setLngLat([114.30, 30.50]).addTo(map);
+            // marker不是作为图层，而是作为地图的一部分，所以不需要添加到图层中
+            const layer_before = map.getStyle().layers;
+            console.log(layer_before);
+        });
+        // 通过点击事件添加marker, 会发现layers中多了一个marker图层
+        map.on('click', (e) => {
+            const marker = new mapboxgl.Marker({
+                color: '#FFFFFF',
+                draggable: true
+            }).setLngLat(e.lngLat).addTo(map);
+            const layer_after = map.getStyle().layers;
+            console.log(layer_after);
+        }
+        );
+        // layer_before和layer_after的数量是一样的
+    </script>
+</body>
+
+</html>
