@@ -8,6 +8,7 @@
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="../utils/zIndex.js"></script>
     <style>
         #map {
             width: 100vw;
@@ -60,6 +61,22 @@
         map.on("style.load", () => {
             /* map.setFog可以设置背景 */
             map.setFog({});
+
+            // 高亮图层
+            map.addLayer({
+                id: 'hubei-highlight',
+                type: 'fill',
+                source: {
+                    type: "geojson",
+                    data: data,
+                },
+                paint: {
+                    'fill-color': 'yellow',
+                    'fill-opacity': 0.5
+                },
+                zIndex: 1
+            })
+
             // 填充图层
             map.addLayer({
                 id: 'hubei-fill',
@@ -87,21 +104,6 @@
                     'line-width': 2,
                 }
             })
-
-            // 高亮图层
-            map.addLayer({
-                id: 'hubei-highlight',
-                type: 'fill',
-                source: {
-                    type: "geojson",
-                    data: data,
-                },
-                paint: {
-                    'fill-color': 'yellow',
-                    'fill-opacity': 0.5
-                }
-            })
-
         });
 
         let popup = null;
