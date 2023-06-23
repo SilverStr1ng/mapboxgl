@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            projection: 'globe',
+        });
+
+        const data = {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: [114.30, 30.50]
+            },
+        }
+
+        map.on('style.load', () => {
+            map.setFog({});
+            map.addLayer({
+                id: 'point',
+                type: 'symbol',
+                source: {
+                    type: 'geojson',
+                    data: data
+                },
+                layout: {
+                    'text-field': '武汉',
+                },
+                paint: {
+                    'text-color': '#f00',
+                    'text-halo-color': '#fff',
+                    'text-halo-width': 2
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
