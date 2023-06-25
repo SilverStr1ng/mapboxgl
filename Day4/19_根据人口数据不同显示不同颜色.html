@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [114.30, 30.50],
+                zoom: 8,
+                pitch: 0
+                // zoom:8
+            })
+        });
+        /* PolygonLayer */
+        /* PointLayer */
+        /* LineLayer */
+        const colors = ['#303841', '#ff2e63', '#30e3ca', '#fcbad3', '#aa96da', '#cca8e9', '#ff9a00', '#625772', '#b61aae', '#a7ff83', '#ba52ed']
+        scene.on("loaded", () => {
+
+            var url = 'http://39.103.151.139:8000/gis/wuhan_people'
+            /* 
+            1、根据武汉市人口数据的不同显示不同的颜色
+            2、根据人口数据不同,各个区域显示不同的高度
+            3、悬停对应区域,出现popup弹窗,根据人口不同,hover不同的颜色
+             */
+            fetch(url).then(res => res.json())
+                .then(data => {
+                    const layer = new L7.PolygonLayer()
+                        .source(data)
+                        .color("people", colors)
+                        .size("people", p => {
+                            return p / 1000
+                        })
+                        .shape("extrude")
+                    // .active(true)
+                    scene.addLayer(layer)
+                    let popup = null;
+                    layer.on("mousemove", evt => {
+                        var lngLat = evt.lngLat;
+                        const { name, people } = evt.feature.properties;
+                        popup = new L7.Popup({
+                            lngLat: evt.lngLat,
+                            html: `<span>${name}</span>`,
+                            closeButton: false
+                        })
+                        scene.addPopup(popup)
+                        if (people > 900000) {
+                            layer.active({
+                                color: "#ff2d51"
+                            })
+                        } else if (
+                            people > 700000
+                        ) {
+                            layer.active({
+                                color: "#fd7e14"
+                            })
+                        } else {
+                            layer.active({
+                                color: "#00B96B"
+                            })
+                        }
+                    })
+                    layer.on("mouseout", () => {
+                        if (popup) {
+                            console.log(popup)
+                            // popup.remove()
+                            popup.hide()
+                        }
+                    })
+                })
+
+            /* 900000  #ff2d51  */
+            /* 700000  #fd7e14 */
+            /*        #00B96B */
+
+        })
+
+    </script>
+</body>
+
+</html>
