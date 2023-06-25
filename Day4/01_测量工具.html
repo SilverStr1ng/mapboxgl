@@ -34,12 +34,22 @@
             left: 50px;
             z-index: 100;
         }
+
+        #deleteDraw {
+            width: 200px;
+            height: 50px;
+            position: fixed;
+            top: 80px;
+            left: 50px;
+            z-index: 100;
+        }
     </style>
 </head>
 
 <body>
     <!-- 2、设置地图容器的挂载点 -->
     <button id="activeDraw">激活画笔</button>
+    <button id="deleteDraw">删除画笔</button>
     <div id="map">
 
     </div>
@@ -88,24 +98,42 @@
         //将绘制控件添加到左上角
         map.addControl(draw, 'top-left');
         /* 2、点击按键,激活画笔 */
+        var btn = document.getElementById("activeDraw");
         $("#activeDraw").click(function () {
             /* 激活画笔 */
-            draw.changeMode("draw_polygon")
+            draw.changeMode("draw_polygon");
+            /* 设置按钮为不能点击的状态 */
+            btn.disabled = true;
+            btn.style.cursor = "no-drop"
         })
         /* 3、获取坐标,测算面积 */
         map.on("draw.create", handleDraw)
         function handleDraw(evt) {
+
             var data = evt.features[0];
             /* turf测算面积  -平方米 */
             let area = (turf.area(data) / 1000).toFixed(2) + "平方公里";
+            console.log(area)
             /* 将面积使用popup显示到中心点 */
             let center = turf.center(data).geometry.coordinates;
-            /* 设置popup */
-            let popup = new mapboxgl.Popup()
-                .setText(area)
+            // 设置popup
+            var popup = new mapboxgl.Popup({
+                closeButton: true,
+                closeOnClick: false
+            })
                 .setLngLat(center)
-            popup.addTo(map);
+                .setHTML(area)
+                .addTo(map);
+
+            /* 绘制完成重置按钮 */
+            btn.disabled = false;
+            btn.style.cursor = "pointer"
         }
+
+        // 删除画笔
+        $("#deleteDraw").click(function () {
+            draw.deleteAll();
+        })
     </script>
 </body>
 
