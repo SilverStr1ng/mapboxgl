@@ -60,52 +60,20 @@
                             color: "#ff2d51"
                         })
                     scene.addLayer(layer);
-                    /* 2、设置线图层 */
-                    /* 
-                    color 设置颜色
-                    size 设置线的宽度
-                     */
-                    const line_layer = new L7.LineLayer();
-                    line_layer.source(data)
-                        .color("#333")
-                        .size(2)
-                        .style({
-                            opacity: 0.1
-                        })
-                    scene.addLayer(line_layer)
-
-
-                    /* 设置高亮图层 */
-                    const highLayer = new L7.PolygonLayer();
-                    highLayer.source({
-                        type: "FeatureCollection",
-                        features: [
-
-                        ]
-                    }).color("#ff2d51")
-                    scene.addLayer(highLayer);
-                    /* 将点击要的要素添加到高亮图层中 */
-                    layer.on("click", evt => {
-                        console.log(evt.feature)
-                        var feature = evt.feature;
-                        /* 图层有setData添加数据
-                         */
-                        highLayer.setData({
-                            type: "FeatureCollection",
-                            features: [
-                                feature
-                            ]
-                        });
-                        // 弹窗
-                        var popup = new L7.Popup({
-                            offsets: [0, 0],
-                            closeButton: false
-                        }).setLnglat(evt.lngLat)
-                            .setHTML(feature.properties.name)
-                            
-                        scene.addPopup(popup)
+                    // 设置线图层
+                    const lineLayer = new L7.LineLayer({
+                        zIndex: 2
                     })
+                    lineLayer.source(data)
+                        .size(0.3)
+                        .shape('line')
+                        .color('#fff')
+                        .style({
+                            opacity: 1
+                        })
+                    scene.addLayer(lineLayer)
                 })
+
         })
     </script>
 </body>
