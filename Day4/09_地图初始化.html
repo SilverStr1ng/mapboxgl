@@ -26,7 +26,7 @@
             map: new GaodeMap({
                 /* light dark */
                 style: 'light', // 样式URL
-                center: [120.19382669582967, 30.258134],
+                center: [114.30, 30.50],
                 zoom: 2,
                 pitch: 0
                 // zoom:8
@@ -36,44 +36,12 @@
         /* PointLayer */
         /* LineLayer */
         scene.on("loaded", () => {
-            fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json")
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data)
-                    /* 1、设置图层 */
-                    const layer = new L7.PolygonLayer();
-                    /* 
-                    source  --添加数据
-                    color --给数据设置样式 ol-style  mapbox-paint
-                    active --鼠标悬浮,图层的颜色改变
-                     */
-                    layer.source(data)
-                        /* color可以获取geojson中的properties属性中的值 */
-                        .color("name", [
-                            'rgb(239,243,255)',
-                            'rgb(189,215,231)',
-                            'rgb(107,174,214)',
-                            'rgb(49,130,189)',
-                            'rgb(8,81,156)'
-                        ])
-                        .active({
-                            color: "#ff2d51"
-                        })
-                    scene.addLayer(layer);
-                    // 设置线图层
-                    const lineLayer = new L7.LineLayer({
-                        zIndex: 2
-                    })
-                    lineLayer.source(data)
-                        .size(0.3)
-                        .shape('line')
-                        .color('#fff')
-                        .style({
-                            opacity: 1
-                        })
-                    scene.addLayer(lineLayer)
-                })
-
+            const marker = new L7.Marker({})
+            .setLnglat({
+                lng: 114.30,
+                lat: 30.50
+            })
+        scene.addMarker(marker)
         })
     </script>
 </body>
