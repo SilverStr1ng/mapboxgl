@@ -1,0 +1,23 @@
+{
+  "name": "vue3-map",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@antv/l7": "^2.16.1",
+    "@antv/l7-maps": "^2.16.1",
+    "axios": "^1.4.0",
+    "mapbox-gl": "^2.15.0",
+    "sass": "^1.63.6",
+    "scss": "^0.2.4",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.9"
+  }
+}
