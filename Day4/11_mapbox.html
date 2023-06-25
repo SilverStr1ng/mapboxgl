@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- mapbox-l7 -->
+    <script src="https://unpkg.com/@antv/l7"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        const token = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.Mapbox({
+                style: 'dark', // 样式URL
+                center: [120.19382669582967, 30.258134],
+                pitch: 70,
+                zoom: 12,
+                projection: "globe",
+                token
+            })
+        });
+        /* mapbox的map */
+        const map = scene.map;
+        map.on("load", () => {
+            map.setFog({
+
+            })
+        })
+        /*
+        Vue  jsx
+         */
+    </script>
+</body>
+
+</html>

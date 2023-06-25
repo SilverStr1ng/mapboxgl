@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 1、导入依赖 -->
+    <script src="https://unpkg.com/@antv/l7"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 2、设置地图容器的挂载点 -->
+    <div id="map">
+
+    </div>
+    <script>
+        /* 3、实例化地图 */
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            /* style-layer */
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "type": "raster",
+                        "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 10, // starting zoom
+            // pitch: 60
+        });
+
+        const { Scene, Mapbox } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new Mapbox({
+                mapInstance: map,
+            }),
+        });
+        var data = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {
+                        radius: 40
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.324186, 30.520078]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        radius: 60
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.35703, 30.561369]
+                    }
+                }
+            ]
+        }
+
+        scene.on("loaded", () => {
+            /* 创建点图层 */
+            var point_layer = new L7.PointLayer()
+                .source(data)
+                /* size 相当于半径 */
+                .size("radius", r => {
+                    console.log(r);
+                    return r / 2
+                })
+                /* 40  #ff2d51
+                   60  #652e80
+                 */
+                .shape("circle")
+                // 根据属性值设置颜色
+                .color("radius", r => {
+                    if (r == 40) {
+                        return "#ff2d51"
+                    } else {
+                        return "#652e80"
+                    }
+                })
+            scene.addLayer(point_layer)
+        })
+    </script>
+</body>
+
+</html>
