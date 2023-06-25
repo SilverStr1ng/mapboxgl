@@ -104,8 +104,6 @@
             console.log(center);
             var centerPoint = center.geometry.coordinates;
             var popup = new mapboxgl.Popup({
-                closeButton: false,
-                closeOnClick: false
             }).setLngLat(centerPoint).setHTML("面积：" + area.toFixed(2) + "平方公里").addTo(map);
         });
     </script>
