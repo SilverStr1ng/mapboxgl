@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [120.19382669582967, 30.258134],
+                zoom: 2,
+                pitch: 0
+                // zoom:8
+            })
+        });
+        /* PolygonLayer */
+        /* PointLayer */
+        /* LineLayer */
+        scene.on("loaded", () => {
+            const zoom = new L7.Zoom({
+                zoomInTitle: '放大',
+                zoomOutTitle: '缩小',
+            });
+            scene.addControl(zoom);
+
+            const scale = new L7.Scale({
+                zoomInTitle: '放大',
+                zoomOutTitle: '缩小',
+            });
+            scene.addControl(scale);
+
+            const fullscreen = new L7.Fullscreen({
+                btnText: '全屏',
+                exitBtnText: '退出全屏',
+            });
+            scene.addControl(fullscreen)
+
+            const layer = new L7.PointLayer({
+                name: '点图层',
+            });
+            layer.source({
+                type: "FeatureCollection",
+                features: [
+                    {
+                        type: "Feature",
+                        geometry: {
+                            type: "Point",
+                            coordinates: [114.30, 30.50]
+                        }
+                    }
+                ]
+            })
+                .shape("circle")
+                .color("#333")
+                .style({
+                    opacity: 0.5,
+                    strokeWidth: 1
+                })
+                .size(20)
+                .active(true)
+            scene.addLayer(layer);
+
+            const layerSwitch = new L7.LayerSwitch({
+                layers: [layer],
+            });
+            scene.addControl(layerSwitch);
+
+            const mouseLocation = new L7.MouseLocation({
+                transform: (position) => {
+                    return position;
+                },
+            });
+            scene.addControl(mouseLocation);
+
+            const mapTheme = new L7.MapTheme({});
+            scene.addControl(mapTheme);
+        })
+    </script>
+</body>
+
+</html>
