@@ -33,23 +33,7 @@
         const map = new mapboxgl.Map({
             container: 'map', // container ID
             /* style-layer */
-            style: {
-                "version": 8,
-                "sources": {
-                    "raster-tiles": {
-                        "type": "raster",
-                        "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
-                        "tileSize": 256
-                    }
-                },
-                "layers": [{
-                    "id": "simple-tiles",
-                    "type": "raster",
-                    "source": "raster-tiles",
-                    "minzoom": 0,
-                    "maxzoom": 22
-                }]
-            },
+            style: 'mapbpx://styles/mapbox/streets-v11',
             center: [114.40088809833583,
                 30.4663210497187], // starting position [lng, lat]
             zoom: 14, // starting zoom
@@ -76,13 +60,7 @@
                         })
                         .color("people", p => {
                             // 大于2500 #ff2d51   大于2000 #f69849  其他 #00B96B
-                            if (p > 2500) {
-                                return "#ff2d51"
-                            } else if (p > 2000) {
-                                return "#f69849"
-                            } else {
-                                return "#00B96B"
-                            }
+                            
                         })
                         .style({
                             opacity: 0.5
