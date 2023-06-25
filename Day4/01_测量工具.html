@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 1、导入依赖 -->
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <!-- 导入画笔 -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css"
+        type="text/css">
+    <!-- 导入jq -->
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <script src="https://lib.baomitu.com/Turf.js/latest/turf.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #activeDraw {
+            width: 200px;
+            height: 50px;
+            position: fixed;
+            top: 20px;
+            left: 50px;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 2、设置地图容器的挂载点 -->
+    <button id="activeDraw">激活画笔</button>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 3、实例化地图 */
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            /* style-layer */
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "type": "raster",
+                        "tiles": ["http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            center: [114.30, 30.50], // starting position [lng, lat]
+            zoom: 14, // starting zoom
+            pitch: 60
+        });
+        /* 添加画笔控件到地图 */
+        var draw = new MapboxDraw({
+            //不允许使用键盘交互绘制
+            keybindings: false,
+            //设置为ture，可按住shift+拉框来拾取图形
+            boxSelect: true,
+            //点击要素时的响应半径（像素单位）
+            clickBuffer: 5,
+            //默认控件显示方式。如果设置为true，则会添加所有的绘图控件
+            displayControlsDefault: false,
+            //添加指定的绘制控件
+            controls: {
+
+            }
+        });
+        //将绘制控件添加到左上角
+        map.addControl(draw, 'top-left');
+        //激活画笔
+        $("#activeDraw").click(function () {
+            draw.changeMode('draw_polygon');
+        })
+        // 获取坐标,测算面积
+        map.on('draw.create', function (e) {
+            var data = draw.getAll();
+            console.log(data);
+            var coordinates = data.features[0].geometry.coordinates[0];
+            var area = turf.area(data)/1000;
+            console.log(area);
+            var polygon = turf.polygon([coordinates]);
+            var center = turf.centerOfMass(polygon);
+            console.log(center);
+            var centerPoint = center.geometry.coordinates;
+            var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            }).setLngLat(centerPoint).setHTML("面积：" + area.toFixed(2) + "平方公里").addTo(map);
+        });
+    </script>
+</body>
+
+</html>
