@@ -33,7 +33,7 @@
         const map = new mapboxgl.Map({
             container: 'map', // container ID
             /* style-layer */
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'mapbox://styles/mapbox/streets-v12',
             center: [114.40088809833583,
                 30.4663210497187], // starting position [lng, lat]
             zoom: 14, // starting zoom
@@ -60,7 +60,14 @@
                         })
                         .color("people", p => {
                             // 大于2500 #ff2d51   大于2000 #f69849  其他 #00B96B
-                            
+                            if (p > 2500) {
+                                return "#ff2d51"
+                            } else if (p > 2000) {
+                                return "#f69849"
+                            } else {
+                                return "#00B96B"
+                            }
+
                         })
                         .style({
                             opacity: 0.5

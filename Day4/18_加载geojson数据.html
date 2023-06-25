@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [120.19382669582967, 30.258134],
+                zoom: 2,
+                pitch: 0
+                // zoom:8
+            })
+        });
+        /* PolygonLayer */
+        /* PointLayer */
+        /* LineLayer */
+        const colors = [
+            '#87CEFA',
+            '#00BFFF',
+            '#7FFFAA',
+            '#00FF7F',
+            '#32CD32',
+            '#F0E68C',
+            '#FFD700',
+            '#FF7F50',
+            '#FF6347',
+            '#FF0000',
+            '#333333'
+        ];
+        scene.on('loaded', () => {
+            fetch(
+                'https://geo.datav.aliyun.com/areas_v3/bound/420100_full.json'
+            )
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    const layer = new L7.PolygonLayer({})
+                        .source(data)
+                        .shape('extrude')
+                        .size('adcode', [100, 120, 160, 200, 260, 500])
+                        .style({
+                            opacity: ['adcode', [0, 1]],
+                            pickLight: true
+                        })
+                        .color('adcode', colors)
+                        .active(true)
+                    scene.addLayer(layer);
+                });
+        });
+    </script>
+</body>
+
+</html>
