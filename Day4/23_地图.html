@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [120.19382669582967, 30.258134],
+                zoom: 2,
+                pitch: 0
+                // zoom:8
+            })
+        });
+        let url = 'https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json'
+        scene.on('loaded', () => {
+            fetch(url).then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    const layer = new L7.PolygonLayer({})
+                        .source(data)
+                        .style({
+                            pickLight: true,
+                            opacity: 0.8
+                        })
+                        .color()
+                        .active(true)
+
+                    scene.addLayer(layer);
+
+                    const line_layer = new L7.LineLayer({})
+                        .source(data)
+                        .color("#333")
+                        .size(1)
+                        .style({
+                            opacity: 0.5
+                        })
+                    scene.addLayer(line_layer)
+
+
+                    const layerPopup = new L7.LayerPopup({
+                        items: [
+                            {
+                                layer: layer,
+                                fields: [
+                                    'adcode',
+                                    'name',
+                                    {
+                                        field: 'level',
+                                        formatField: () => '行政单位',
+                                        formatValue: (val) => val
+                                    }
+                                ],
+                            },
+                        ],
+                        trigger: 'hover',
+                    });
+                    scene.addPopup(layerPopup);
+
+                })
+
+        });
+
+    </script>
+</body>
+
+</html>
