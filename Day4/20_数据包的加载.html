@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/mapbox/streets-v12', // stylesheet location
+            center: [114.30, 30.50],
+            zoom: 4
+        });
+        map.addControl(new MapboxLanguage({
+            defaultLanguage: 'zh-Hans'  // 设置默认语言
+        }))
+        const { Scene, Mapbox, PolygonLayer, Popup } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new Mapbox({
+                mapInstance: map,
+            }),
+        });
+        const colors = ['#303841', '#ff2e63', '#30e3ca', '#fcbad3', '#aa96da', '#cca8e9', '#ff9a00', '#625772', '#b61aae', '#a7ff83', '#ba52ed']
+        scene.on('loaded', () => {
+            fetch(
+                'http://39.103.151.139:8000/gis/china'
+            )
+                .then(res => res.json())
+                .then(data => {
+                    const layer = new PolygonLayer({})
+                        .source(data)
+                        .style({
+                            pickLight: true,
+                            opacity: 0.8
+                        })
+                        .color('name', colors)
+                        .active(true)
+                    scene.addLayer(layer);
+                });
+        });
+
+    </script>
+</body>
+
+</html>
