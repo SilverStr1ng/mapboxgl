@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [120.19382669582967, 30.258134],
+                zoom: 2,
+                pitch: 0
+                // zoom:8
+            })
+        });
+        /* PolygonLayer */
+        /* PointLayer */
+        /* LineLayer */
+        scene.on("loaded", () => {
+            fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json")
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    /* 1、设置图层 */
+                    const layer = new L7.PolygonLayer();
+                    /* 
+                    source  --添加数据
+                    color --给数据设置样式 ol-style  mapbox-paint
+                    active --鼠标悬浮,图层的颜色改变
+                     */
+                    layer.source(data)
+                        /* color可以获取geojson中的properties属性中的值 */
+                        .color("name", [
+                            'rgb(239,243,255)',
+                            'rgb(189,215,231)',
+                            'rgb(107,174,214)',
+                            'rgb(49,130,189)',
+                            'rgb(8,81,156)'
+                        ])
+                        .active({
+                            color: "#ff2d51"
+                        })
+                    scene.addLayer(layer);
+                    /* 2、设置线图层 */
+                    /* 
+                    color 设置颜色
+                    size 设置线的宽度
+                     */
+                    const line_layer = new L7.LineLayer();
+                    line_layer.source(data)
+                        .color("#333")
+                        .size(2)
+                        .style({
+                            opacity: 0.1
+                        })
+                    scene.addLayer(line_layer)
+
+
+                    /* 设置高亮图层 */
+                    const highLayer = new L7.PolygonLayer();
+                    highLayer.source({
+                        type: "FeatureCollection",
+                        features: [
+
+                        ]
+                    }).color("#ff2d51")
+                    scene.addLayer(highLayer);
+                    /* 将点击要的要素添加到高亮图层中 */
+                    layer.on("click", evt => {
+                        console.log(evt.feature)
+                        var feature = evt.feature;
+                        /* 图层有setData添加数据
+                         */
+                        highLayer.setData({
+                            type: "FeatureCollection",
+                            features: [
+                                feature
+                            ]
+                        });
+                    })
+                })
+        })
+    </script>
+</body>
+
+</html>
