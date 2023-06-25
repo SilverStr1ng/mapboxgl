@@ -13,7 +13,6 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css"
         type="text/css">
-    <!-- 导入jq -->
     <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
     <script src="https://lib.baomitu.com/Turf.js/latest/turf.min.js"></script>
     <style>
@@ -71,7 +70,7 @@
             zoom: 14, // starting zoom
             pitch: 60
         });
-        /* 添加画笔控件到地图 */
+        /* 1、添加画笔控件到地图 */
         var draw = new MapboxDraw({
             //不允许使用键盘交互绘制
             keybindings: false,
@@ -88,24 +87,25 @@
         });
         //将绘制控件添加到左上角
         map.addControl(draw, 'top-left');
-        //激活画笔
+        /* 2、点击按键,激活画笔 */
         $("#activeDraw").click(function () {
-            draw.changeMode('draw_polygon');
+            /* 激活画笔 */
+            draw.changeMode("draw_polygon")
         })
-        // 获取坐标,测算面积
-        map.on('draw.create', function (e) {
-            var data = draw.getAll();
-            console.log(data);
-            var coordinates = data.features[0].geometry.coordinates[0];
-            var area = turf.area(data)/1000;
-            console.log(area);
-            var polygon = turf.polygon([coordinates]);
-            var center = turf.centerOfMass(polygon);
-            console.log(center);
-            var centerPoint = center.geometry.coordinates;
-            var popup = new mapboxgl.Popup({
-            }).setLngLat(centerPoint).setHTML("面积：" + area.toFixed(2) + "平方公里").addTo(map);
-        });
+        /* 3、获取坐标,测算面积 */
+        map.on("draw.create", handleDraw)
+        function handleDraw(evt) {
+            var data = evt.features[0];
+            /* turf测算面积  -平方米 */
+            let area = (turf.area(data) / 1000).toFixed(2) + "平方公里";
+            /* 将面积使用popup显示到中心点 */
+            let center = turf.center(data).geometry.coordinates;
+            /* 设置popup */
+            let popup = new mapboxgl.Popup()
+                .setText(area)
+                .setLngLat(center)
+            popup.addTo(map);
+        }
     </script>
 </body>
 
