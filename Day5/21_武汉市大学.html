@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+    <script src='https://lib.baomitu.com/jquery/3.6.3/jquery.min.js'></script>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <!-- 将png图片添加,自定义点图层的样式 -->
+    <script>
+        const token = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        var { Scene, GaodeMap, PolygonLayer, CityBuildingLayer } = L7;
+
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                style: 'dark',
+                center: [114.30, 30.50],
+                pitch: 60,
+                zoom: 13.2
+            })
+        });
+        scene.on('loaded', () => {
+            fetch(
+                'http://39.103.151.139:8000/gis/school'
+            ).then(async res => {
+                const pointLayer = new CityBuildingLayer();
+                pointLayer
+                    .source(await res.json())
+                    .size('floor', f => f)
+                    .color('rgba(242,246,250,1.0)')
+                    .active({
+                        color: '#0ff',
+                        mix: 0.5
+                    })
+                    .style({
+                        opacity: 0.7,
+                        baseColor: 'rgb(16, 16, 16)',
+                        windowColor: 'rgb(30, 60, 89)',
+                        brightColor: 'rgb(255, 176, 38)',
+                        sweep: {
+                            enable: true,
+                            sweepRadius: 2,
+                            sweepColor: '#1990FF',
+                            sweepSpeed: 0.2,
+                        }
+                    })
+                    .animate(true)
+                scene.addLayer(pointLayer);
+            });
+        }); 
+    </script>
+</body>
+
+</html>
