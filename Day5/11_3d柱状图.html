@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [114.30, 30.50],
+                zoom: 10,
+                pitch: 70
+            })
+        });
+        const map = scene.map;
+        const data = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {
+                        height: 100
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.428659, 30.637105]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        height: 200
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.170987, 30.589739]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        height: 300
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.423655, 30.497093]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        height: 400
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [114.646304, 30.645714]
+                    }
+                }
+            ]
+        }
+
+        scene.on("loaded", () => {
+            const city_layer = new L7.PointLayer();
+            city_layer.source(data)
+                .size("height", h => [50, h])
+                .shape("cylinder")
+                .animate(true)
+            scene.addLayer(city_layer)
+        })
+
+    </script>
+</body>
+
+</html>
