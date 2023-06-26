@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <script src="https://lib.baomitu.com/Turf.js/latest/turf.min.js"></script>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        const token = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+
+        const { Scene, Mapbox, PolygonLayer, CityBuildingLayer, MapTheme } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new Mapbox({
+                style: "dark",
+                center: [114.30, 30.50],
+                zoom: 10,
+                // pitch: 90,
+                token,
+                projection: "globe"
+            })
+        });
+        const colors = ['#303841', '#ff2e63', '#30e3ca', '#fcbad3', '#aa96da', '#cca8e9', '#ff9a00', '#625772', '#b61aae', '#a7ff83', '#ba52ed']
+
+        fetch(
+            '../data/Wuhan_Buildings.json'
+        ).then(async res => {
+            const pointLayer = new CityBuildingLayer();
+            pointLayer
+                .source(await res.json())
+                .size('Elevation', h => h)
+                .color('rgba(242,246,250,1.0)')
+                .animate({
+                    enable: true
+                })
+                .active({
+                    color: '#0ff',
+                    mix: 0.5
+                })
+                .style({
+                    opacity: 0.7,
+                    baseColor: 'rgb(16, 16, 16)',
+                    windowColor: 'rgb(30, 60, 89)',
+                    brightColor: 'rgb(255, 176, 38)',
+                    sweep: {
+                        enable: true,
+                        sweepRadius: 2,
+                        sweepColor: '#1990FF',
+                        sweepSpeed: 0.3,
+                        sweepCenter: [114.30, 30.50]
+                    }
+                })
+                .filter("Elevation", h => h > 20)
+            scene.addLayer(pointLayer);
+        });
+        scene.on('loaded', () => {
+            scene.on('click', evt => {
+                console.log(evt)
+            }); // 鼠标左键点击事件
+            const mapTheme = new MapTheme({});
+            scene.addControl(mapTheme);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/mapbox/dark-v10', // stylesheet location
+            pitch: 50,
+            center: [114.050008, 22.529272],
+            zoom: 14
+        });
+        const { Scene, Mapbox, PolygonLayer, Popup } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new Mapbox({
+                mapInstance: map,
+            }),
+        });
+        const colors = [
+            '#87CEFA',
+            '#00BFFF',
+
+            '#7FFFAA',
+            '#00FF7F',
+            '#32CD32',
+
+            '#F0E68C',
+            '#FFD700',
+
+            '#FF7F50',
+            '#FF6347',
+            '#FF0000',
+            '#FF2D51'
+        ];
+        scene.on('loaded', () => {
+            fetch(
+                'https://gw.alipayobjects.com/os/basement_prod/972566c5-a2b9-4a7e-8da1-bae9d0eb0117.json'
+            )
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    const layer = new L7.CityBuildingLayer({})
+                        .source(data)
+                        .shape('extrude')
+                        .size('h20', [100, 120, 160, 200, 260, 500])
+                        .color('h20', [
+                            '#816CAD',
+                            '#A67FB5',
+                            '#C997C7',
+                            '#DEB8D4',
+                            '#F5D4E6',
+                            '#FAE4F1',
+                            '#FFF3FC'
+                        ]).
+                        active(true)
+                        .style({
+                            opacity: 0.7,
+                            baseColor: 'rgb(16, 16, 16)',
+                            windowColor: 'rgb(30, 60, 89)',
+                            brightColor: 'rgb(255, 176, 38)',
+                            sweep: {
+                                // 设置是否扫光
+                                enable: true,
+                                // 扩散半径
+                                sweepRadius: 5,
+                                sweepColor: '#1990FF',
+                                // 扩散速度
+                                sweepSpeed: 0.2,
+                                // 扩散中心点
+                                sweepCenter: [114.050008, 22.529272]
+                            }
+                        })
+                        .animate({
+                            enable: true
+                        })
+                    scene.addLayer(layer);
+                });
+        });
+
+    </script>
+</body>
+
+</html>

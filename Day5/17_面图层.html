@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- mapbox-l7 -->
+
+    <script src="https://unpkg.com/@antv/l7"></script>
+    <script src="https://unpkg.com/@antv/l7-draw"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        const token = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.Mapbox({
+                style: 'dark', // 样式URL
+                center: [118, 32],
+                pitch: 70,
+                zoom: 7,
+                projection: "globe",
+                token
+            })
+        });
+        /* mapbox的map */
+        const map = scene.map;
+
+        const colors = [
+            '#87CEFA',
+            '#00BFFF',
+
+            '#7FFFAA',
+            '#00FF7F',
+            '#32CD32',
+
+            '#F0E68C',
+            '#FFD700',
+
+            '#FF7F50',
+            '#FF6347',
+            '#FF0000',
+            '#FF2D51'
+        ];
+
+        scene.on('loaded', () => {
+            fetch("https://gw.alipayobjects.com/os/bmw-prod/94763191-2816-4c1a-8d0d-8bcf4181056a.json").then(res => res.json())
+                .then(data => {
+                    const nanjing = new L7.PolygonLayer();
+                    nanjing.source(data)
+                        .size('unit_price', p => {
+                            return p / 2
+                        })
+                        .color("unit_price", colors)
+                        .shape("extrude")
+                    scene.addLayer(nanjing);
+
+                    const layerPopup = new L7.LayerPopup({
+                        items: [
+                            {
+                                layer: nanjing,
+                                fields: [
+                                    {
+                                        field: 'name',
+                                        formatField: () => '地区',
+                                        formatValue: (val) => val
+                                    },
+                                    {
+                                        field: 'unit_price',
+                                        formatField: () => '房价',
+                                        formatValue: (val) => val
+                                    },
+                                ],
+                            },
+                        ],
+                        trigger: 'hover',
+                    });
+                    scene.addPopup(layerPopup);
+                    nanjing.on("mousemove", e => {
+                        const { unit_price } = e.feature.properties;
+                        if (unit_price > 20000) {
+                            nanjing.active({
+                                color: "red"
+                            })
+                        } else {
+                            nanjing.active({
+                                color: "green"
+                            })
+                        }
+                    })
+                })
+        });
+
+    </script>
+</body>
+
+</html>
