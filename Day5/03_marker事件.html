@@ -49,17 +49,22 @@
         scene.on("loaded", () => {
             // 点击事件要在地图加载完成后才能绑定
             // 点击地图添加marker
+            const markerLayer = new L7.MarkerLayer({})
             scene.on("click", (e) => {
+                // 创建markerLayer图层
+
+
                 const marker = new L7.Marker({})
                     .setLnglat({
                         lng: e.lnglat.lng,
                         lat: e.lnglat.lat
                     })
-                scene.addMarker(marker)
+                markerLayer.addMarker(marker)
+                scene.addMarkerLayer(markerLayer)
             })
             // 清除标注
             $("#clear").click(() => {
-                scene.removeAllMarkers()
+                scene.removeMarkerLayer(markerLayer)
             })
         })
     </script>
