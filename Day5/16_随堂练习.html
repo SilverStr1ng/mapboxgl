@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- mapbox-l7 -->
+
+    <script src="https://unpkg.com/@antv/l7"></script>
+    <script src="https://unpkg.com/@antv/l7-draw"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        const token = 'pk.eyJ1IjoiY2hlbmdiZW5jaGFvIiwiYSI6ImNsODU3aGRiODA0Y2UzcHBzZmFlcmdqZ2sifQ.8k59W_pB_Riwe6o-MneRlA'
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.Mapbox({
+                style: 'dark', // 样式URL
+                center: [114.30, 30.50],
+                pitch: 70,
+                zoom: 12,
+                projection: "globe",
+                token
+            })
+        });
+        /* mapbox的map */
+        const map = scene.map;
+
+        scene.on('loaded', () => {
+            fetch("http://39.103.151.139:8000/gis/road_state").then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    const wuhan = new L7.LineLayer();
+                    wuhan.source(data)
+                        .size(1)
+                        .color("flow", f => {
+                            console.log(f)
+                            if (f > 2000) {
+                                return "#8b0003"
+                            } else if (f >= 1500) {
+                                return "#ff2d51"
+                            } else if (f >= 1000) {
+                                return "#f69849"
+                            } else {
+                                return "#00b96b"
+                            }
+                        })
+                        .shape("line")
+                        .animate({
+                            interval: 1, // 间隔
+                            duration: 2, // 持续时间，延时
+                            trailLength: 2 // 流线长度
+                        })
+                        .active({
+                            color: "yellow"
+                        })
+                        /* geometry properties的属性可以直接获取*/
+                        .filter("coordinates", e => {
+                            // console.log(e)
+                            return e.length > 8;
+                        })
+                    scene.addLayer(wuhan);
+                })
+        });
+
+    </script>
+</body>
+
+</html>
