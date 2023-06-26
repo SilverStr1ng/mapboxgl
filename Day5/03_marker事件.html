@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <script src="https://lib.baomitu.com/jquery/2.2.4/jquery.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #clear {
+            width: 100px;
+            height: 20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="clear">清除标注</button>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [114.30, 30.50],
+                zoom: 2,
+                pitch: 0
+                // zoom:8
+            })
+        });
+        /* PolygonLayer */
+        /* PointLayer */
+        /* LineLayer */
+        scene.on("loaded", () => {
+            // 点击事件要在地图加载完成后才能绑定
+            // 点击地图添加marker
+            scene.on("click", (e) => {
+                const marker = new L7.Marker({})
+                    .setLnglat({
+                        lng: e.lnglat.lng,
+                        lat: e.lnglat.lat
+                    })
+                scene.addMarker(marker)
+            })
+            // 清除标注
+            $("#clear").click(() => {
+                scene.removeAllMarkers()
+            })
+        })
+    </script>
+</body>
+
+</html>
