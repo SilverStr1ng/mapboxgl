@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <script src="https://unpkg.com/@antv/l7-draw"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+
+    </div>
+    <script>
+        /* 实例化地图 */
+        var { Scene, GaodeMap } = L7;
+        const scene = new Scene({
+            id: 'map',
+            map: new GaodeMap({
+                /* light dark */
+                style: 'light', // 样式URL
+                center: [114.30, 30.50],
+                zoom: 2,
+                pitch: 0
+                // zoom:8
+            })
+        });
+        /* PolygonLayer */
+        /* PointLayer */
+        /* LineLayer */
+        const { DrawPolygon, DrawEvent } = L7.Draw;
+        scene.on("loaded", () => {
+            const drawPolygon = new DrawPolygon(scene, {
+                //展示面积
+                areaOptions: {},
+            });
+            drawPolygon.enable();
+
+            drawPolygon.on(DrawEvent.Change, (allFeatures) => {
+                console.log(allFeatures);
+            });
+        })
+    </script>
+</body>
+
+</html>
